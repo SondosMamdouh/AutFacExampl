@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using System;
+using System.Reflection;
 
 namespace AutoFacExample
 {
@@ -22,13 +23,13 @@ namespace AutoFacExample
         static void Main(string[] args)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<Bazuka>();
-            builder.RegisterType<Warrior>();
-            builder.RegisterType<Sword>();
-            builder.Register<IWeapon>(x => x.Resolve<Bazuka>());
+            var dataAccess = Assembly.GetExecutingAssembly();
+
+            builder.RegisterAssemblyTypes(dataAccess);
+
 
             var container = builder.Build();
-            var warrior = container.Resolve<Warrior>();
+            var warrior = container.Resolve<Bazuka>();
             warrior.Kill();
         }
     }
